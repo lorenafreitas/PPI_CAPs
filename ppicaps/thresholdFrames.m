@@ -28,7 +28,7 @@ nFrames     = 179;
 load([b.dataDir b.curSubj '_deconvolvedData']);
 
 % Reshape matrix into 2D to facilitate computations
-subjectData2D      = reshape(deconvData, [], 340)';
+subjectData2D      = zscore(reshape(deconvData, [], nFrames))';
 
 
 % ----------------------
@@ -85,7 +85,7 @@ function meanSignal = averageSignal(X, VOIxyzMat)
 
 % Initialise variables
 nVoxels = size(VOIxyzMat,2);
-signal  = zeros(nVoxels, 340);
+signal  = zeros(nVoxels, 179);
 X       = zscore(X);
 
 % Get signal from voxels
