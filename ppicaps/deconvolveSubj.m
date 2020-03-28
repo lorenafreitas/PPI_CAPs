@@ -1,4 +1,4 @@
-% Function copied from the relevant section of SPM8's spm_peb_ppi.m 
+% Function based on the relevant section of SPM8's spm_peb_ppi.m 
 % function for devonvolution, usually used in the context of PPI analyses.
 %
 % Last checked: September 2019
