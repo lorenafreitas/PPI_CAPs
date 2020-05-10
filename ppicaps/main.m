@@ -71,7 +71,7 @@ end
 k = 4;
 
 % Run kmeans++ on 
-[PPI_CAPs, PPI_CAPs_Ix]  = kmeansCustom(supraFrames(voxels,:), k, 100); 
+[PPI_CAPs, PPI_CAPs_Ix]  = kmeanspp(supraFrames(voxels,:), k, 100); 
    
 for i = 1:k
         CAPix{i}              = find(PPI_CAPs == i); % #frames x 1; index of frames for this CAP
