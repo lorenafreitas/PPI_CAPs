@@ -78,38 +78,28 @@ for i = 1:k
         CAPl{i}               = PPI_CAPs == i;
         scf{i}                = CAPl{i}.* PPI_CAPs_Ix; %signed cluster's frames
         cluster{i}            = supraFrames(:,CAPix{i}); % #voxels x #frames
-        CAPmean               = (sum(supraFrames(:,scf{i}==1),2) - sum(supraFrames(:,scf{i}==2),2))/sum(CAPl{i} );
-        CAPmean(nonVoxels,:)  = 0;
-        CAPmean{i}            = CAPmean;
+        CAPmean{i}               = (sum(supraFrames(:,scf{i}==1),2) - sum(supraFrames(:,scf{i}==2),2))/sum(CAPl{i} );
+        CAPmean{i}(nonVoxels,:)  = 0;
         
-        polarityLabels= scf{i};
-        polarityLabels = polarityLabels(CAPix{i});
-        taskLabels = taskInfo(CAPix{i});  
-        polarityLabels{i} = polarityLabels;
-        taskLabels{i} = taskLabels;
+        polarityLabelsTmp= scf{i};
+        polarityLabels{i} = polarityLabelsTmp(CAPix{i});
+        taskLabels{i} = taskInfo(CAPix{i});
         seedSigns{i}   = seedSignLabels(CAPix{i});
-
-         
-         % Temporal normalization, as done by Karahanoglu et al., 2015
+        
+        
+        % Temporal normalization, as done by Karahanoglu et al., 2015
         if strcmp(dist, 'cosine')
             sd1 = std(cluster{i}, 0, 2);
-            if (~ismember(0, sd1(voxels)) && ~ismember(Inf, sd1(voxels)))
-                CAPmean(voxels) =  bsxfun(@rdivide,  CAPmean(voxels), sd1(voxels));
-                CAPmean{i}      = CAPmean;
-            else
-                warning(['Voxels were not normalised by variance for cap=' num2str(i) ', K=' num2str(k)]);
-            end
+            CAPmean{i}(sd1(:)>0) =  bsxfun(@rdivide,  CAPmean{i}(sd1(:)>0), sd1(sd1(:)>0));
         end
         
         % Spatial nomalization (voxelwise, for visualisation purposes only)
-        sd2 = std(CAPmean(voxels));
-        if (~ismember(0, sd2) && ~ismember(Inf, sd2))
-            CAPmean(voxels)       = (CAPmean(voxels) - mean(CAPmean(voxels)))/sd2;
-            CAPmean{i}     = CAPmean;
-        end
+        sd2 = std(CAPmean{i}(CAPmean{i}~=0));
+        CAPmean{i}(CAPmean{i}~=0)       = (CAPmean{i}(CAPmean{i}~=0) - mean(CAPmean{i}(CAPmean{i}~=0)))/sd2;
         
-        CAP_vol{i}     = reshape(CAPmean{i} , 53, 63, 46); % save it back in the original 3D shape
-   
+        % Reshape back to 3D
+        CAP_vol{i}     = reshape(CAPmean{i} , 53, 63, 52); % save it back in the original 3D shape
+        
         
         % Creates a new NIFTI for the CAP
         tmp_cap = make_nii(CAP_vol{i},voxel_size,round(-voxel_shift./voxel_size));
