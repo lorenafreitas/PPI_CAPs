@@ -7,3 +7,5 @@
 For a gentle introduction on how to perform a PPI-CAPs analysis, please follow the tutorial on ppicaps_toyExample.m
 
 ## Current fork contains bug fixes (see https://github.com/lorenafreitas/PPI_CAPs/pull/1)
+
+### Last update: Nov 16, 2021
