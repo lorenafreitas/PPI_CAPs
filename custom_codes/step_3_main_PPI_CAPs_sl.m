@@ -181,7 +181,7 @@ if run_stats
     %% Build contrast of interest e.g. music vs singing
     % 1: flute, 2: mother, 3: stranger, 4: noise, 5: silence
     % unique(task4framesALL) % prints 0,1,2,3,4,5
-    
+
     % Contrast: music VS singing (combined)
     task_mask = ~(taskSigns==1 | taskSigns==2 |  taskSigns==3);
     taskSigns(task_mask)=0; % zero-out all except 1,2,3 that interests us
@@ -196,6 +196,31 @@ if run_stats
 %     taskSigns(taskSigns==1) = 1;  % as in the original publication: music VS 
 %     taskSigns(taskSigns==5) = -1; % as in the original publication: silence
 %     contrast_name = 'musicVSsilence';
+    
+%      % Contrast: singing VS silence
+%      task_mask = ~(taskSigns==2 |  taskSigns==3 | taskSigns==5);
+%      taskSigns(task_mask)=0; % zero-out all except 1,5 that interests us
+%      taskSigns(taskSigns==2) = 1;  % as in the original publication: mother singing +
+%      taskSigns(taskSigns==3) = 1; % as in the original publication: strnager singing VS
+%      taskSigns(taskSigns==5) = -1; % as in the original publication: silence
+%      contrast_name = 'singingVSsilence';
+
+%      % Contrast: music VS noise
+%      task_mask = ~(taskSigns==1 | taskSigns==4);
+%      taskSigns(task_mask)=0; % zero-out all except 1,4 that interests us
+%      taskSigns(taskSigns==1) = 1;  % as in the original publication: music VS 
+%      taskSigns(taskSigns==4) = -1; % as in the original publication: noise
+%      contrast_name = 'musicVSnoise';
+
+%     % Contrast: singing VS noise
+%     task_mask = ~(taskSigns==2 |  taskSigns==3 | taskSigns==4);
+%     taskSigns(task_mask)=0; % zero-out all except 2,3,4 that interests us
+%     taskSigns(taskSigns==2) = 1;  % as in the original publication: mother singing +
+%     taskSigns(taskSigns==3) = 1; % as in the original publication: stranger singing VS
+%     taskSigns(taskSigns==4) = -1; % as in the original publication: noise
+%     contrast_name = 'singingVSnoise';
+
+     disp(contrast_name);
 
     
     %% Build group contrast of interest e.g. PTC vs PTM
@@ -205,6 +230,7 @@ if run_stats
 %     grouplabels(grouplabels==1) = 1; % PTC
 %     grouplabels(grouplabels==2) = -1; % PTM
     
+
     %% Permutation & plotting params
     maxPerm = 2000; % Maximum number of random permutations
     f=figure; f.Position(3:4) = [1000 850];
