@@ -28,7 +28,7 @@ nFrames     = 179;
 load([b.dataDir b.curSubj '_deconvolvedData']);
 
 % Reshape matrix into 2D to facilitate computations
-subjectData2D      = zscore(reshape(deconvData, [], nFrames))';
+subjectData2D      = zscore(reshape(deconvData, [], nFrames), 0, 2)'; % z-score each voxel across frames/time
 
 
 % ----------------------
@@ -86,7 +86,8 @@ function meanSignal = averageSignal(X, VOIxyzMat)
 % Initialise variables
 nVoxels = size(VOIxyzMat,2);
 signal  = zeros(nVoxels, 179);
-X       = zscore(X);
+%X       = zscore(X);
+X       = zscore(X, 0, 4); % z-score each voxel across time !
 
 % Get signal from voxels
 for i=1:nVoxels
